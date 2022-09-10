@@ -5,6 +5,7 @@ import com.example.workshopmongo.dto.UserDTO;
 import com.example.workshopmongo.repository.UserRepository;
 import com.example.workshopmongo.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +28,14 @@ public class UserService {
 
     public User insert(User obj){
         return repo.insert(obj);
+    }
+
+    public void delete(String id){
+        try {
+            repo.deleteById(id);
+        } catch (EmptyResultDataAccessException e){
+            throw new ObjectNotFoundException(id);
+        }
     }
 
     public User fromDTO(UserDTO objDTO){
